@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maze_puzzle/model/data.dart';
-import 'package:unity_ads_plugin/unity_ads_plugin.dart';
-import '../main.dart';
+
 import 'bar.dart';
 import 'elmaze.dart';
 
@@ -13,59 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
- Map<String, bool> placements = {
-    AdManager.interstitialVideoAdPlacementId: false,
-    AdManager.rewardedVideoAdPlacementId: false,
-  };
-  void _loadAds() {
-    for (var placementId in placements.keys) {
-      _loadAd(placementId);
-    }
-  }
 
-  void _loadAd(String placementId) {
-    UnityAds.load(
-      placementId: placementId,
-      onComplete: (placementId) {
-        setState(() {
-          placements[placementId] = true;
-        });
-      },
-      onFailed: (placementId, error, message) => null,
-    );
-  }
-
-  void _showAd(String placementId) {
-    setState(() {
-      placements[placementId] = false;
-    });
-    UnityAds.showVideoAd(
-      placementId: placementId,
-      onComplete: (placementId) {
-        _loadAd(placementId);
-      },
-      onFailed: (placementId, error, message) {
-        _loadAd(placementId);
-      },
-      onStart: (placementId) => null,
-      onClick: (placementId) => null,
-      onSkipped: (placementId) {
-        _loadAd(placementId);
-      },
-    );
-  }
-  @override
-  void initState() {
-    super.initState();
-    UnityAds.init(
-      gameId: AdManager.gameId,
-      testMode: mode,
-      onComplete: () {
-        _loadAds();
-      },
-      onFailed: (error, message) => null,
-    );
-  }
 
 
     String userName = 'User Name';
@@ -95,7 +42,6 @@ class _HomeState extends State<Home> {
               Data data = dataList[i];
               return InkWell(
                 onTap: (){
-                 _showAd(AdManager.interstitialVideoAdPlacementId);
                   Navigator.push(context, MaterialPageRoute(builder: (builder)=> ElMaze( data: data,)));
                 },
                 child: Card(
@@ -104,7 +50,6 @@ class _HomeState extends State<Home> {
               );
             }),
       ),
-      bottomNavigationBar: UnityBannerAd(placementId: AdManager.bannerAdPlacementId,),
 
     );
   }

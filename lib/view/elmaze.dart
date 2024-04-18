@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maze/maze.dart';
 import 'package:maze_puzzle/view/home.dart';
-import 'package:unity_ads_plugin/unity_ads_plugin.dart';
-import '../main.dart';
 import '../model/data.dart';
 
 class ElMaze extends StatefulWidget {
@@ -17,60 +15,7 @@ class ElMaze extends StatefulWidget {
 }
 
 class _ElMazeState extends State<ElMaze> {
-  Map<String, bool> placements = {
-    AdManager.interstitialVideoAdPlacementId: false,
-    AdManager.rewardedVideoAdPlacementId: false,
-  };
-  void _loadAds() {
-    for (var placementId in placements.keys) {
-      _loadAd(placementId);
-    }
-  }
 
-  void _loadAd(String placementId) {
-    UnityAds.load(
-      placementId: placementId,
-      onComplete: (placementId) {
-        setState(() {
-          placements[placementId] = true;
-        });
-      },
-      onFailed: (placementId, error, message) => null,
-    );
-  }
-
-  void _showAd(String placementId) {
-    setState(() {
-      placements[placementId] = false;
-    });
-    UnityAds.showVideoAd(
-      placementId: placementId,
-      onComplete: (placementId) {
-        _loadAd(placementId);
-      },
-      onFailed: (placementId, error, message) {
-        _loadAd(placementId);
-      },
-      onStart: (placementId) => null,
-      onClick: (placementId) => null,
-      onSkipped: (placementId) {
-        _loadAd(placementId);
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    UnityAds.init(
-      gameId: AdManager.gameId,
-      testMode: mode,
-      onComplete: () {
-        _loadAds();
-      },
-      onFailed: (error, message) => null,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +23,7 @@ class _ElMazeState extends State<ElMaze> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              _showAd(AdManager.interstitialVideoAdPlacementId);
+           
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const Home()),
                   (route) => false);
@@ -101,8 +46,7 @@ class _ElMazeState extends State<ElMaze> {
                           actions: [
                             IconButton(
                                 onPressed: () {
-                                  _showAd(
-                                      AdManager.interstitialVideoAdPlacementId);
+                             
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                           builder: (context) =>
@@ -113,9 +57,7 @@ class _ElMazeState extends State<ElMaze> {
                           ],
                         ));
               })),
-      bottomNavigationBar: UnityBannerAd(
-        placementId: AdManager.bannerAdPlacementId,
-      ),
+
     );
   }
 }

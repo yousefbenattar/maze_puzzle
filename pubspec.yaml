@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   maze: ^3.0.0
-  unity_ads_plugin: ^0.3.13
   easy_splash_screen: ^1.0.4
   url_launcher: ^6.2.5
 
